@@ -1,0 +1,2 @@
+# easysched
+Schedule creation software
