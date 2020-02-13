@@ -4,8 +4,7 @@ Schedule creation software code.
 # Feb. 13, 2020
 Created readme file.
 
-For scaffolding using MySQL:
+Run the below command to create or update the database context in the application.
 ````
-scaffold-DbContext –Connection "Server=localhost;Port=3306;user=root;password=password;Database=easysched" -Provider "MySql.Data.EntityFrameworkCore" -OutputDir "Models" –Context "easyschedContext" –Verbose -Force
+scaffold-DbContext –Connection "Server=localhost;Port=3306;user=root;password=password;Database=easysched" -Provider "Pomelo.EntityFrameworkCore.MySql" -OutputDir "Models" –Context "easyschedContext" -ContextDir "Data" –Verbose -Force
 ````
-To update the application when the database changes, run the above command with -f at the end.
