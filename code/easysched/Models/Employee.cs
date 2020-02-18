@@ -5,6 +5,11 @@ namespace easysched.Models
 {
     public partial class Employee
     {
+        public Employee()
+        {
+            Employeelog = new HashSet<Employeelog>();
+        }
+
         public uint Id { get; set; }
         public uint AccessId { get; set; }
         public string FirstName { get; set; }
@@ -15,5 +20,6 @@ namespace easysched.Models
 
         public virtual Access Access { get; set; }
         public virtual Phonenumber PhoneNumber { get; set; }
+        public virtual ICollection<Employeelog> Employeelog { get; set; }
     }
 }

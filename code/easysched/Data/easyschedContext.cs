@@ -20,6 +20,7 @@ namespace easysched.Data
         public virtual DbSet<Company> Company { get; set; }
         public virtual DbSet<Companylicence> Companylicence { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }
+        public virtual DbSet<Employeelog> Employeelog { get; set; }
         public virtual DbSet<Licence> Licence { get; set; }
         public virtual DbSet<Phonenumber> Phonenumber { get; set; }
         public virtual DbSet<Phonetype> Phonetype { get; set; }
@@ -29,7 +30,7 @@ namespace easysched.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=localhost;port=3306;user=easysched;password=easysched2020;database=easysched", x => x.ServerVersion("8.0.19-mysql"));
+                optionsBuilder.UseMySql("server=localhost;port=3306;user=root;password=password;database=easysched", x => x.ServerVersion("8.0.19-mysql"));
             }
         }
 
@@ -167,6 +168,42 @@ namespace easysched.Data
                     .WithMany(p => p.Employee)
                     .HasForeignKey(d => d.PhoneNumberId)
                     .HasConstraintName("employee_ibfk_1");
+            });
+
+            modelBuilder.Entity<Employeelog>(entity =>
+            {
+                entity.ToTable("employeelog");
+
+                entity.HasIndex(e => e.Employeeid)
+                    .HasName("employeeid");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Employeeid).HasColumnName("employeeid");
+
+                entity.Property(e => e.Ipaddress)
+                    .IsRequired()
+                    .HasColumnName("ipaddress")
+                    .HasColumnType("varchar(15)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Log)
+                    .IsRequired()
+                    .HasColumnName("log")
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Time)
+                    .HasColumnName("time")
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.Employeelog)
+                    .HasForeignKey(d => d.Employeeid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("employeelog_ibfk_1");
             });
 
             modelBuilder.Entity<Licence>(entity =>
