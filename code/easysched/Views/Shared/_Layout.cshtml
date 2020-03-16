@@ -9,6 +9,9 @@
 </head>
 <body>
     <header>
+        <img src="~/img/CapstoneIcon.png" alt="Capstone Logo" />
+        <h1>Hello, John Doe!</h1>
+        <h3>Schedule Last Update at 2020/03/12</h3>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">easysched</a>
@@ -33,20 +36,37 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - easysched - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="row">
+            <a href="">
+                <img src="~/img/arrowRight.png" alt="Right Arrow" />
+            </a>
+            <h2>Change to Calender View</h2>
+            <a href="">
+                <img src="~/img/arrowLeft.jpg" alt="Left Arrow" />
+            </a>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+        <main>
+            <div class="container">
+                <section>
+                    @RenderBody()
+                </section>
+                <aside>
+                    <form method="GET" action="">
+                        <button type="button">Request Time-Off</button><br />
+                        <button type="button">Update Availability</button><br />
+                        <button type="button">Settings</button><br />
+                    </form>
+                </aside>
+            </div>
+        </main>
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2020 - easysched - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@RenderSection("Scripts", required: false)
 </body>
 </html>

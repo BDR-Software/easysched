@@ -53,19 +53,79 @@ button.accept-policy {
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+* {
+    margin: 0;
+    padding: 0;
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+header img {
+    float: left;
+    padding-right: 30px;
+    width: 190px;
+    height: 125px;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+
+header h1 {
+    background: -webkit-linear-gradient(#859398, #283048);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+    font-weight: bolder;
+    font-size: 66px;
 }
+
+header h3 {
+    background: -webkit-linear-gradient(#859398, #283048);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    font-size: 43px;
+    margin-bottom: 30px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+    .row h2 {
+        display: inline-block;
+        padding-left: 2px;
+    }
+
+    .row img {
+        vertical-align: middle;
+        height: 30px;
+        width: 30px;
+    }
+
+#calenderImg {
+    margin-top: 20px;
+    float: left;
+    margin-left: 70px;
+}
+
+aside {
+    float: left;
+    padding-top: 180px;
+    padding-bottom: 20px;
+    margin-left: 95px;
+}
+
+button {
+    width: 100%;
+    font-size: 25px;
+    padding: 3px;
+    margin-bottom: 10px;
+}
+
+footer {
+    clear: both;
+}
+
+    footer p {
+        font-size: 15px;
+        text-align: center;
+    }
