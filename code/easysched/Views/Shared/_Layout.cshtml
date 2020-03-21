@@ -36,6 +36,10 @@
             </div>
         </nav>
     </header>
+    <main>
+        <section>
+            @RenderBody()
+        </section>
         <div class="row">
             <a href="">
                 <img src="~/img/arrowRight.png" alt="Right Arrow" />
@@ -45,20 +49,16 @@
                 <img src="~/img/arrowLeft.jpg" alt="Left Arrow" />
             </a>
         </div>
-        <main>
-            <div class="container">
-                <section>
-                    @RenderBody()
-                </section>
-                <aside>
-                    <form method="GET" action="">
-                        <button type="button">Request Time-Off</button><br />
-                        <button type="button">Update Availability</button><br />
-                        <button type="button">Settings</button><br />
-                    </form>
-                </aside>
-            </div>
-        </main>
+        <div class="container">
+            <aside>
+                <form  method="GET" action="">
+                    <button type="button">Request Time-Off</button><br />
+                    <button type="button">Update Availability</button><br />
+                    <button type="button">Settings</button><br />
+                </form>
+            </aside>
+        </div>
+    </main>
 <footer class="border-top footer text-muted">
     <div class="container">
         &copy; 2020 - easysched - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

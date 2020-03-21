@@ -113,19 +113,19 @@ aside {
     padding-bottom: 20px;
     margin-left: 95px;
 }
-
-button {
+aside button {
     width: 100%;
     font-size: 25px;
     padding: 3px;
     margin-bottom: 10px;
+    color: goldenrod;
 }
 
 footer {
     clear: both;
 }
 
-    footer p {
+footer p {
         font-size: 15px;
         text-align: center;
     }
