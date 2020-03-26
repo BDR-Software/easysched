@@ -3,18 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - easysched</title>
+    <title>@ViewData["Title"] - Easysched</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
         <img src="~/img/CapstoneIcon.png" alt="Capstone Logo" />
-        <h1>Hello, John Doe!</h1>
-        <h3>Schedule Last Update at 2020/03/12</h3>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">easysched</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Easysched</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -46,9 +44,6 @@
         </nav>
     </header>
     <main>
-        <section>
-            @RenderBody()
-        </section>
         <div class="row">
             <a href="">
                 <img src="~/img/arrowRight.png" alt="Right Arrow" />
@@ -59,18 +54,14 @@
             </a>
         </div>
         <div class="container">
-            <aside>
-                <form  method="GET" action="">
-                    <button type="button">Request Time-Off</button><br />
-                    <button type="button">Update Availability</button><br />
-                    <button type="button">Settings</button><br />
-                </form>
-            </aside>
+            <section>
+                @RenderBody()
+            </section>
         </div>
     </main>
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2020 - easysched - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2020 - Easysched - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -12,22 +12,36 @@ a {
   color: #0366d6;
 }
 
+nav{
+    border-radius:25px;
+}
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
 
+nav a.hover {
+    background-color: #96c93d;
+    transform: scale(1.5);
+}
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #1b6ec2;
+  background-color: gainsboro;
   border-color: #1861ac;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 17px;
+    font-weight:bold;
+    font-style: italic;
+    background-image: -webkit-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
+    background-image: -moz-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
+    background-image: -o-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
+    background-image: linear-gradient(45deg, #00b09b 0%, white 75%, #96c93d 100%);
 }
 @media (min-width: 768px) {
   html {
@@ -43,7 +57,7 @@ html {
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  box-shadow: 10px 13px 5px 0px;
 }
 
 button.accept-policy {
@@ -58,31 +72,18 @@ button.accept-policy {
     padding: 0;
 }
 
+header {
+    background-image: -webkit-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
+    background-image: -moz-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
+    background-image: -o-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
+    background-image: linear-gradient(45deg, #00b09b 0%, white 75%, #96c93d 100%);
+}
+
 header img {
     float: left;
     padding-right: 30px;
-    width: 190px;
+    width: 210px;
     height: 125px;
-}
-
-header h1 {
-    background: -webkit-linear-gradient(#859398, #283048);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-style: italic;
-    font-weight: bolder;
-    font-size: 66px;
-}
-
-header h3 {
-    background: -webkit-linear-gradient(#859398, #283048);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: bold;
-    font-size: 43px;
-    margin-bottom: 30px;
 }
 
 .row {
@@ -107,25 +108,8 @@ header h3 {
     margin-left: 70px;
 }
 
-aside {
-    float: left;
-    padding-top: 180px;
-    padding-bottom: 20px;
-    margin-left: 95px;
-}
-aside button {
-    width: 100%;
-    font-size: 25px;
-    padding: 3px;
-    margin-bottom: 10px;
-    color: goldenrod;
-}
-
 footer {
     clear: both;
+    font-size: 15px;
+    text-align: center;
 }
-
-footer p {
-        font-size: 15px;
-        text-align: center;
-    }
