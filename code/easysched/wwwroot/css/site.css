@@ -86,6 +86,24 @@ header img {
     height: 125px;
 }
 
+button {
+    background-color: #4CAF50; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    padding: 10px 24px;
+    border-radius: 12px;
+    margin:5px;
+}
+
+    button.hover {
+        background-color: #C30606;
+    }
+
 .row {
     display: flex;
     justify-content: center;
@@ -107,7 +125,7 @@ header img {
     float: left;
     margin-left: 70px;
 }
-
+ 
 footer {
     clear: both;
     font-size: 15px;
