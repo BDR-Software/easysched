@@ -23,10 +23,10 @@
             @Html.DisplayFor(model => model.LastName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Employeeid)
+            @Html.DisplayNameFor(model => model.EmployeeNumber)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Employeeid)
+            @Html.DisplayFor(model => model.EmployeeNumber)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
@@ -35,16 +35,22 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Access)
+            @Html.DisplayNameFor(model => model.Wages)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Access.Rights)
+            @Html.DisplayFor(model => model.Wages)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.Company)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber.Id)
+            @Html.DisplayFor(model => model.Company.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Priveleges)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Priveleges.Id)
         </dd>
     </dl>
 </div>

@@ -10,23 +10,23 @@ using easysched.Models;
 
 namespace easysched.Controllers
 {
-    public class EmployeeController : Controller
+    public class ScheduleController : Controller
     {
         private readonly easyschedContext _context;
 
-        public EmployeeController(easyschedContext context)
+        public ScheduleController(easyschedContext context)
         {
             _context = context;
         }
 
-        // GET: Employee
+        // GET: Schedule
         public async Task<IActionResult> Index()
         {
-            var easyschedContext = _context.Employee.Include(e => e.Company).Include(e => e.Priveleges);
+            var easyschedContext = _context.Schedule.Include(s => s.Department);
             return View(await easyschedContext.ToListAsync());
         }
 
-        // GET: Employee/Details/5
+        // GET: Schedule/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +34,42 @@ namespace easysched.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
-                .Include(e => e.Company)
-                .Include(e => e.Priveleges)
+            var schedule = await _context.Schedule
+                .Include(s => s.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(schedule);
         }
 
-        // GET: Employee/Create
+        // GET: Schedule/Create
         public IActionResult Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Id");
-            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id");
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name");
             return View();
         }
 
-        // POST: Employee/Create
+        // POST: Schedule/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PrivelegesId,CompanyId,FirstName,LastName,EmployeeNumber,Email,Wages")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,Week,DepartmentId")] Schedule schedule)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                _context.Add(schedule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Id", employee.CompanyId);
-            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id", employee.PrivelegesId);
-            return View(employee);
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Id", schedule.DepartmentId);
+            return View(schedule);
         }
 
-        // GET: Employee/Edit/5
+        // GET: Schedule/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +77,23 @@ namespace easysched.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee.FindAsync(id);
-            if (employee == null)
+            var schedule = await _context.Schedule.FindAsync(id);
+            if (schedule == null)
             {
                 return NotFound();
             }
-            ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Id", employee.CompanyId);
-            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id", employee.PrivelegesId);
-            return View(employee);
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Id", schedule.DepartmentId);
+            return View(schedule);
         }
 
-        // POST: Employee/Edit/5
+        // POST: Schedule/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PrivelegesId,CompanyId,FirstName,LastName,EmployeeNumber,Email,Wages")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Week,DepartmentId")] Schedule schedule)
         {
-            if (id != employee.Id)
+            if (id != schedule.Id)
             {
                 return NotFound();
             }
@@ -106,12 +102,12 @@ namespace easysched.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
+                    _context.Update(schedule);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.Id))
+                    if (!ScheduleExists(schedule.Id))
                     {
                         return NotFound();
                     }
@@ -122,12 +118,11 @@ namespace easysched.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Id", employee.CompanyId);
-            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id", employee.PrivelegesId);
-            return View(employee);
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Id", schedule.DepartmentId);
+            return View(schedule);
         }
 
-        // GET: Employee/Delete/5
+        // GET: Schedule/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +130,31 @@ namespace easysched.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
-                .Include(e => e.Company)
-                .Include(e => e.Priveleges)
+            var schedule = await _context.Schedule
+                .Include(s => s.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(schedule);
         }
 
-        // POST: Employee/Delete/5
+        // POST: Schedule/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employee.FindAsync(id);
-            _context.Employee.Remove(employee);
+            var schedule = await _context.Schedule.FindAsync(id);
+            _context.Schedule.Remove(schedule);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
+        private bool ScheduleExists(int id)
         {
-            return _context.Employee.Any(e => e.Id == id);
+            return _context.Schedule.Any(e => e.Id == id);
         }
     }
 }

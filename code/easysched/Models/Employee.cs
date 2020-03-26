@@ -7,19 +7,24 @@ namespace easysched.Models
     {
         public Employee()
         {
-            Employeelog = new HashSet<Employeelog>();
+            EmployeeAvailability = new HashSet<EmployeeAvailability>();
+            EmployeeSchedule = new HashSet<EmployeeSchedule>();
+            Phone = new HashSet<Phone>();
         }
 
-        public uint Id { get; set; }
-        public uint AccessId { get; set; }
+        public int Id { get; set; }
+        public int PrivelegesId { get; set; }
+        public int CompanyId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Employeeid { get; set; }
+        public string EmployeeNumber { get; set; }
         public string Email { get; set; }
-        public uint? PhoneNumberId { get; set; }
+        public double? Wages { get; set; }
 
-        public virtual Access Access { get; set; }
-        public virtual Phonenumber PhoneNumber { get; set; }
-        public virtual ICollection<Employeelog> Employeelog { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual Priveleges Priveleges { get; set; }
+        public virtual ICollection<EmployeeAvailability> EmployeeAvailability { get; set; }
+        public virtual ICollection<EmployeeSchedule> EmployeeSchedule { get; set; }
+        public virtual ICollection<Phone> Phone { get; set; }
     }
 }

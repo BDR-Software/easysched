@@ -1,7 +1,7 @@
 ﻿@model easysched.Models.Employee
 
 @{
-    ViewData["Title"] = "Add New Employee";
+    ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
@@ -13,23 +13,27 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="AccessId" class="control-label"></label>
-                <select asp-for="AccessId" class="form-control" asp-items="ViewBag.AccessId"></select>
+                <label asp-for="PrivelegesId" class="control-label"></label>
+                <select asp-for="PrivelegesId" class ="form-control" asp-items="ViewBag.PrivelegesId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label">First Name</label>
+                <label asp-for="CompanyId" class="control-label"></label>
+                <select asp-for="CompanyId" class ="form-control" asp-items="ViewBag.CompanyId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label">Last Name</label>
+                <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Employeeid" class="control-label">Employee Number</label>
-                <input asp-for="Employeeid" class="form-control" />
-                <span asp-validation-for="Employeeid" class="text-danger"></span>
+                <label asp-for="EmployeeNumber" class="control-label"></label>
+                <input asp-for="EmployeeNumber" class="form-control" />
+                <span asp-validation-for="EmployeeNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -37,15 +41,10 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="_PhoneNumber" class="control-label">Phone Number</label>
-                <input type="number" name="_PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber.Number" class="text-danger"></span>
+                <label asp-for="Wages" class="control-label"></label>
+                <input asp-for="Wages" class="form-control" />
+                <span asp-validation-for="Wages" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label for="_PhonetypeId" class="control-label">Phone Type</label>
-                <select name="_PhonetypeId" class="form-control" asp-items="ViewBag.PhoneType"></select>
-            </div>
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -57,6 +56,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

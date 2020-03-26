@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace easysched.Models
 {
-    public partial class Phonetype
+    public partial class Priveleges
     {
-        public Phonetype()
+        public Priveleges()
         {
-            Phone = new HashSet<Phone>();
+            Employee = new HashSet<Employee>();
         }
 
         public int Id { get; set; }
         public string Type { get; set; }
 
-        public virtual ICollection<Phone> Phone { get; set; }
+        public virtual ICollection<Employee> Employee { get; set; }
     }
 }
