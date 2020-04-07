@@ -12,36 +12,22 @@ a {
   color: #0366d6;
 }
 
-nav{
-    border-radius:25px;
-}
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
 
-nav a.hover {
-    background-color: #96c93d;
-    transform: scale(1.5);
-}
-
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: gainsboro;
+  background-color: #1b6ec2;
   border-color: #1861ac;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-    font-size: 17px;
-    font-weight:bold;
-    font-style: italic;
-    background-image: -webkit-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
-    background-image: -moz-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
-    background-image: -o-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
-    background-image: linear-gradient(45deg, #00b09b 0%, white 75%, #96c93d 100%);
+  font-size: 14px;
 }
 @media (min-width: 768px) {
   html {
@@ -57,7 +43,7 @@ html {
 }
 
 .box-shadow {
-  box-shadow: 10px 13px 5px 0px;
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
@@ -72,37 +58,32 @@ button.accept-policy {
     padding: 0;
 }
 
-header {
-    background-image: -webkit-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
-    background-image: -moz-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
-    background-image: -o-linear-gradient( 45deg, #00b09b 0%, white 75%, #96c93d 100% );
-    background-image: linear-gradient(45deg, #00b09b 0%, white 75%, #96c93d 100%);
-}
-
 header img {
     float: left;
     padding-right: 30px;
-    width: 210px;
+    width: 190px;
     height: 125px;
 }
 
-button {
-    background-color: #96c93d;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    padding: 10px 24px;
-    border-radius: 12px;
-    margin: 5px;
+header h1 {
+    background: -webkit-linear-gradient(#859398, #283048);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+    font-weight: bolder;
+    font-size: 66px;
 }
 
-    button.hover {
-        background-color: #C30606;
-    }
+header h3 {
+    background: -webkit-linear-gradient(#859398, #283048);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    font-size: 43px;
+    margin-bottom: 30px;
+}
 
 .row {
     display: flex;
@@ -126,27 +107,25 @@ button {
     margin-left: 70px;
 }
 
-table, th, td {
-    border: 1px solid black;
-    text-align:center;
-    vertical-align:central;
+aside {
+    float: left;
+    padding-top: 180px;
+    padding-bottom: 20px;
+    margin-left: 95px;
+}
+aside button {
+    width: 100%;
+    font-size: 25px;
+    padding: 3px;
+    margin-bottom: 10px;
+    color: goldenrod;
 }
 
-table {
-    border-collapse: collapse;
-}
-
-th {
-    background-color: #96c93d;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
- 
 footer {
     clear: both;
-    font-size: 15px;
-    text-align: center;
 }
+
+footer p {
+        font-size: 15px;
+        text-align: center;
+    }

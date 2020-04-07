@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using easysched.Data;
 using easysched.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace easysched.Controllers
 {
@@ -59,14 +60,22 @@ namespace easysched.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Week,DepartmentId")] Schedule schedule)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(schedule);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            var scheduleExists = _context.Schedule.Any(s => s.Week == schedule.Week && s.DepartmentId == schedule.DepartmentId);
+            if (!scheduleExists)
+            {   
+                if (ModelState.IsValid)
+                {
+                    _context.Add(schedule);
+                    await _context.SaveChangesAsync();
+                }
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Id", schedule.DepartmentId);
-            return View(schedule);
+            else
+            {
+                schedule = _context.Schedule.FirstOrDefault(s => s.Week == schedule.Week && s.DepartmentId == schedule.DepartmentId);
+            }
+            HttpContext.Session.SetString("scheduleId", schedule.Id.ToString());
+            return RedirectToAction("index", "EmployeeSchedule");
+       
         }
 
         // GET: Schedule/Edit/5

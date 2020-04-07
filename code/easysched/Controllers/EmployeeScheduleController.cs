@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using easysched.Data;
 using easysched.Models;
+using Microsoft.AspNetCore.Http;
+
 
 namespace easysched.Controllers
 {
@@ -22,7 +24,12 @@ namespace easysched.Controllers
         // GET: EmployeeSchedule
         public async Task<IActionResult> Index()
         {
-            var easyschedContext = _context.EmployeeSchedule.Include(e => e.Employee).Include(e => e.Schedule);
+            //need to handle if session does not exist this correctly later
+            var scheduleId = Convert.ToInt32(HttpContext.Session.GetString("scheduleId"));
+            var easyschedContext = _context.EmployeeSchedule.Include(e => e.Employee)
+                .Include(e => e.Schedule)
+                .Where( e => e.ScheduleId == scheduleId);
+            
             return View(await easyschedContext.ToListAsync());
         }
 
