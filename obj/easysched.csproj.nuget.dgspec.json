@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Kendra\\Documents\\School\\Capstone Project\\easysched\\easysched.csproj": {}
+    "C:\\Users\\afrol\\OneDrive\\Documents\\Capstone\\Documentation\\Code\\easysched\\easysched.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Kendra\\Documents\\School\\Capstone Project\\easysched\\easysched.csproj": {
+    "C:\\Users\\afrol\\OneDrive\\Documents\\Capstone\\Documentation\\Code\\easysched\\easysched.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kendra\\Documents\\School\\Capstone Project\\easysched\\easysched.csproj",
+        "projectUniqueName": "C:\\Users\\afrol\\OneDrive\\Documents\\Capstone\\Documentation\\Code\\easysched\\easysched.csproj",
         "projectName": "easysched",
-        "projectPath": "C:\\Users\\Kendra\\Documents\\School\\Capstone Project\\easysched\\easysched.csproj",
-        "packagesPath": "C:\\Users\\Kendra\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kendra\\Documents\\School\\Capstone Project\\easysched\\obj\\",
+        "projectPath": "C:\\Users\\afrol\\OneDrive\\Documents\\Capstone\\Documentation\\Code\\easysched\\easysched.csproj",
+        "packagesPath": "C:\\Users\\afrol\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\afrol\\OneDrive\\Documents\\Capstone\\Documentation\\Code\\easysched\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Kendra\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\afrol\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,7 +25,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "http://packagesource": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
