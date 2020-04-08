@@ -8,6 +8,7 @@ namespace easysched.Models
         public Company()
         {
             BillingAddress = new HashSet<BillingAddress>();
+            Department = new HashSet<Department>();
             Employee = new HashSet<Employee>();
             Licencing = new HashSet<Licencing>();
             Phone = new HashSet<Phone>();
@@ -18,6 +19,7 @@ namespace easysched.Models
         public string CompanyNumber { get; set; }
 
         public virtual ICollection<BillingAddress> BillingAddress { get; set; }
+        public virtual ICollection<Department> Department { get; set; }
         public virtual ICollection<Employee> Employee { get; set; }
         public virtual ICollection<Licencing> Licencing { get; set; }
         public virtual ICollection<Phone> Phone { get; set; }

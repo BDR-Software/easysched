@@ -7,14 +7,14 @@ namespace easysched.Models
     {
         public Schedule()
         {
-            EmployeeSchedule = new HashSet<EmployeeSchedule>();
+            Shift = new HashSet<Shift>();
         }
 
         public int Id { get; set; }
         public int DepartmentId { get; set; }
-        public DateTime Week { get; set; }
+        public int? Week { get; set; }
 
         public virtual Department Department { get; set; }
-        public virtual ICollection<EmployeeSchedule> EmployeeSchedule { get; set; }
+        public virtual ICollection<Shift> Shift { get; set; }
     }
 }

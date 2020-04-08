@@ -7,7 +7,7 @@ namespace easysched.Models
     {
         public int Id { get; set; }
         public int CompanyId { get; set; }
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         public int PhoneTypeId { get; set; }
         public int Number { get; set; }
 

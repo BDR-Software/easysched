@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,12 +7,12 @@
     <title>@ViewData["Title"] - easysched</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
     <header>
         <img src="~/img/CapstoneIcon.png" alt="Capstone Logo" />
-        <h1>Hello, John Doe!</h1>
-        <h3>Schedule Last Update at 2020/03/12</h3>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">easysched</a>
@@ -35,9 +36,31 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index">Company</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Shifts" asp-action="Index">Shifts</a>
                         </li>
                     </ul>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-revers">
+                        <ul class="navbar-nav flex-grow-1" style="float: right">
+                            @if (Context.Session.GetInt32("LoggedInEmployeeID") == null)
+                            {
+                                <li class="nav-item" style="padding-right: 5px">
+                                    <a id="login" class="navbar-nav flex-grow-1" asp-controller="Logins" asp-action="Index">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="register" class="navbar-nav flex-grow-1" asp-controller="Logins" asp-action="create">Register</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item" style="padding-right: 5px">
+                                    <a id="account" class="navbar-nav flex-grow-1" asp-controller="Shifts" asp-action="Index">Account</a>
+                                </li>
+                                <li class="nav-item" style="padding-right: 5px">
+                                    <a id="logout" class="navbar-nav flex-grow-1" asp-controller="Logins" asp-action="logout">Logout</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -57,7 +80,7 @@
         </div>
         <div class="container">
             <aside>
-                <form  method="GET" action="">
+                <form method="GET" action="">
                     <button type="button">Request Time-Off</button><br />
                     <button type="button">Update Availability</button><br />
                     <button type="button">Settings</button><br />
@@ -65,14 +88,34 @@
             </aside>
         </div>
     </main>
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2020 - easysched - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    </div>
-</footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@RenderSection("Scripts", required: false)
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - easysched - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('#bootstrapModalFullCalendar').fullCalendar({
+            header: {
+                left: '',
+                center: 'prev title next',
+                right: ''
+            },
+            eventClick: function (event, jsEvent, view) {
+                $('#modalTitle').html(event.title);
+                $('#fullCalModal').modal();
+                return false;
+            },
+            events: '@Url.Action("findall", "shifts")'
+        });
+    });
+    </script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

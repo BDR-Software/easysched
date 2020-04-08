@@ -21,12 +21,13 @@ namespace easysched.Data
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }
         public virtual DbSet<EmployeeAvailability> EmployeeAvailability { get; set; }
-        public virtual DbSet<EmployeeSchedule> EmployeeSchedule { get; set; }
         public virtual DbSet<Licencing> Licencing { get; set; }
+        public virtual DbSet<Login> Login { get; set; }
         public virtual DbSet<Phone> Phone { get; set; }
         public virtual DbSet<Phonetype> Phonetype { get; set; }
         public virtual DbSet<Priveleges> Priveleges { get; set; }
         public virtual DbSet<Schedule> Schedule { get; set; }
+        public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<Weekday> Weekday { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -34,7 +35,7 @@ namespace easysched.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=localhost;port=3306;user=root;password=afroless;database=easysched", x => x.ServerVersion("8.0.19-mysql"));
+                optionsBuilder.UseMySql("server=localhost;port=3306;user=root;password=password;database=easysched", x => x.ServerVersion("8.0.19-mysql"));
             }
         }
 
@@ -55,12 +56,6 @@ namespace easysched.Data
                     .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
-
-                entity.Property(e => e.PostalCode)
-                    .HasColumnName("Postal Code")
-                    .HasColumnType("varchar(255)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Province)
                     .HasColumnType("varchar(255)")
@@ -100,12 +95,22 @@ namespace easysched.Data
             {
                 entity.ToTable("department");
 
+                entity.HasIndex(e => e.CompanyId)
+                    .HasName("FKCompany872714");
+
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
                 entity.Property(e => e.Name)
                     .HasColumnType("varchar(255)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.Department)
+                    .HasForeignKey(d => d.CompanyId)
+                    .HasConstraintName("FKCompany872714");
             });
 
             modelBuilder.Entity<Employee>(entity =>
@@ -127,20 +132,12 @@ namespace easysched.Data
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
-                entity.Property(e => e.EmployeeNumber)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
                 entity.Property(e => e.FirstName)
-                    .IsRequired()
                     .HasColumnType("varchar(255)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.LastName)
-                    .IsRequired()
                     .HasColumnType("varchar(255)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -174,9 +171,9 @@ namespace easysched.Data
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
-                entity.Property(e => e.EndTimeSpan).HasColumnName("End : TimeSpan");
+                entity.Property(e => e.End).HasColumnType("datetime");
 
-                entity.Property(e => e.StartTimeSpan).HasColumnName("Start : TimeSpan");
+                entity.Property(e => e.Start).HasColumnType("datetime");
 
                 entity.Property(e => e.WeekdayId).HasColumnName("WeekdayID");
 
@@ -193,37 +190,6 @@ namespace easysched.Data
                     .HasConstraintName("FKEmployee A593831");
             });
 
-            modelBuilder.Entity<EmployeeSchedule>(entity =>
-            {
-                entity.HasKey(e => new { e.ScheduleId, e.EmployeeId })
-                    .HasName("PRIMARY");
-
-                entity.ToTable("employee schedule");
-
-                entity.HasIndex(e => e.EmployeeId)
-                    .HasName("FKEmployee S183223");
-
-                entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
-
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
-
-                entity.Property(e => e.End).HasColumnType("time");
-
-                entity.Property(e => e.Start).HasColumnType("time");
-
-                entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.EmployeeSchedule)
-                    .HasForeignKey(d => d.EmployeeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKEmployee S183223");
-
-                entity.HasOne(d => d.Schedule)
-                    .WithMany(p => p.EmployeeSchedule)
-                    .HasForeignKey(d => d.ScheduleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKEmployee S303335");
-            });
-
             modelBuilder.Entity<Licencing>(entity =>
             {
                 entity.ToTable("licencing");
@@ -235,15 +201,45 @@ namespace easysched.Data
 
                 entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
 
-                entity.Property(e => e.End).HasColumnType("time");
+                entity.Property(e => e.End).HasColumnType("datetime");
 
-                entity.Property(e => e.Start).HasColumnType("time");
+                entity.Property(e => e.Start).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.Licencing)
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKLicencing37786");
+            });
+
+            modelBuilder.Entity<Login>(entity =>
+            {
+                entity.ToTable("login");
+
+                entity.HasIndex(e => e.EmployeeId)
+                    .HasName("FKEmployee1312456");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.Pass)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.Login)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKEmployee1312456");
             });
 
             modelBuilder.Entity<Phone>(entity =>
@@ -276,7 +272,6 @@ namespace easysched.Data
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.Phone)
                     .HasForeignKey(d => d.EmployeeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKPhone263678");
 
                 entity.HasOne(d => d.PhoneType)
@@ -303,11 +298,6 @@ namespace easysched.Data
                 entity.ToTable("priveleges");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Type)
-                    .HasColumnType("varchar(255)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
             });
 
             modelBuilder.Entity<Schedule>(entity =>
@@ -321,8 +311,6 @@ namespace easysched.Data
 
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
-                entity.Property(e => e.Week).HasColumnType("timestamp");
-
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Schedule)
                     .HasForeignKey(d => d.DepartmentId)
@@ -330,16 +318,43 @@ namespace easysched.Data
                     .HasConstraintName("FKSchedule876714");
             });
 
+            modelBuilder.Entity<Shift>(entity =>
+            {
+                entity.ToTable("shift");
+
+                entity.HasIndex(e => e.EmployeeId)
+                    .HasName("FKShift123456");
+
+                entity.HasIndex(e => e.ScheduleId)
+                    .HasName("FKSchedule125456");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.End).HasColumnType("datetime");
+
+                entity.Property(e => e.ScheduleId).HasColumnName("ScheduleID");
+
+                entity.Property(e => e.Start).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.Shift)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKShift123456");
+
+                entity.HasOne(d => d.Schedule)
+                    .WithMany(p => p.Shift)
+                    .HasForeignKey(d => d.ScheduleId)
+                    .HasConstraintName("FKSchedule125456");
+            });
+
             modelBuilder.Entity<Weekday>(entity =>
             {
                 entity.ToTable("weekday");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Day)
-                    .HasColumnType("varchar(255)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
             });
 
             OnModelCreatingPartial(modelBuilder);

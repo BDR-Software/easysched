@@ -8,8 +8,8 @@ namespace easysched.Models
         public int Id { get; set; }
         public int WeekdayId { get; set; }
         public int EmployeeId { get; set; }
-        public int? StartTimeSpan { get; set; }
-        public int? EndTimeSpan { get; set; }
+        public DateTime? Start { get; set; }
+        public DateTime? End { get; set; }
 
         public virtual Employee Employee { get; set; }
         public virtual Weekday Weekday { get; set; }

@@ -11,7 +11,7 @@ namespace easysched.Models
         }
 
         public int Id { get; set; }
-        public string Day { get; set; }
+        public int? Day { get; set; }
 
         public virtual ICollection<EmployeeAvailability> EmployeeAvailability { get; set; }
     }
