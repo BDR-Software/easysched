@@ -238,7 +238,6 @@ namespace easysched.Data
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.Login)
                     .HasForeignKey(d => d.EmployeeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKEmployee1312456");
             });
 
@@ -298,6 +297,11 @@ namespace easysched.Data
                 entity.ToTable("priveleges");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Name)
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
             });
 
             modelBuilder.Entity<Schedule>(entity =>

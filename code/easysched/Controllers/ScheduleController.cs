@@ -23,34 +23,79 @@ namespace easysched.Controllers
         // GET: Schedule
         public async Task<IActionResult> Index()
         {
-            var easyschedContext = _context.Schedule.Include(s => s.Department);
-            return View(await easyschedContext.ToListAsync());
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
+            {
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    var easyschedContext = _context.Schedule.Include(s => s.Department);
+                    return View(await easyschedContext.ToListAsync());
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logins");
+            }
+            
         }
 
         // GET: Schedule/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
+            {
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    var schedule = await _context.Schedule
+                        .Include(s => s.Department)
+                        .FirstOrDefaultAsync(m => m.Id == id);
+                    if (schedule == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(schedule);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logins");
+            }
             if (id == null)
             {
                 return NotFound();
             }
 
-            var schedule = await _context.Schedule
-                .Include(s => s.Department)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (schedule == null)
-            {
-                return NotFound();
-            }
-
-            return View(schedule);
+            
         }
 
         // GET: Schedule/Create
         public IActionResult Create()
         {
-            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name");
-            return View();
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
+            {
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name");
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logins");
+            }
+            
         }
 
         // POST: Schedule/Create
@@ -81,18 +126,33 @@ namespace easysched.Controllers
         // GET: Schedule/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
             {
-                return NotFound();
-            }
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
 
-            var schedule = await _context.Schedule.FindAsync(id);
-            if (schedule == null)
-            {
-                return NotFound();
+                    var schedule = await _context.Schedule.FindAsync(id);
+                    if (schedule == null)
+                    {
+                        return NotFound();
+                    }
+                    ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Id", schedule.DepartmentId);
+                    return View(schedule);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Id", schedule.DepartmentId);
-            return View(schedule);
+            else
+            {
+                return RedirectToAction("Index", "Logins");
+            }
+            
         }
 
         // POST: Schedule/Edit/5
@@ -134,20 +194,35 @@ namespace easysched.Controllers
         // GET: Schedule/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
             {
-                return NotFound();
-            }
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
 
-            var schedule = await _context.Schedule
-                .Include(s => s.Department)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (schedule == null)
+                    var schedule = await _context.Schedule
+                        .Include(s => s.Department)
+                        .FirstOrDefaultAsync(m => m.Id == id);
+                    if (schedule == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(schedule);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Logins");
             }
-
-            return View(schedule);
+            
         }
 
         // POST: Schedule/Delete/5

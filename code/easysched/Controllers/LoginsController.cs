@@ -33,10 +33,49 @@ namespace easysched.Controllers
         {
             if (ModelState.IsValid)
             {
-                var loginFound = await _context.Login.Include(l => l.Employee)
-                                                .FirstOrDefaultAsync(m => m.Email == login.Email && m.Pass == login.Pass);
-                HttpContext.Session.SetInt32("LoggedInEmployeeID", loginFound.EmployeeId);
-                return RedirectToAction("Index", "Shifts");
+               try
+                {
+                    var loginFound = _context.Login.FirstOrDefault(m => m.Email.ToLower() == login.Email.ToLower() && m.Pass == login.Pass);
+                    if (loginFound != null)
+                    {
+                        HttpContext.Session.SetInt32("UserLoggedIn", 1);
+                    }
+
+                    if (loginFound.EmployeeId != null)
+                    {
+                        HttpContext.Session.SetInt32("LoggedInEmployeeID", (int)loginFound.EmployeeId);
+                        var employeeFound = await _context.Employee.Include(e => e.Priveleges)
+                                                                   .FirstOrDefaultAsync(e => e.Id == (int)loginFound.EmployeeId);
+                        HttpContext.Session.SetInt32("UserPriveleges", (int)employeeFound.Priveleges.Type);
+                        if (employeeFound.Priveleges.Type == 1)
+                        {
+                            return RedirectToAction("Index", "Shifts");
+                        }
+                        else if (employeeFound.Priveleges.Type == 2)
+                        {
+                            return RedirectToAction("Create", "Shifts");
+                        }
+                    }
+                    else
+                    {
+                        var employeeWithEmail = await _context.Employee.FirstOrDefaultAsync(e => e.Email == login.Email);
+                        if (employeeWithEmail == null)
+                        {
+                            //show page saying account hasn't been associated with an employee yet
+                        }
+                        else
+                        {
+                            login.Email = employeeWithEmail.Email;
+                            _context.Update(login);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    TempData["ErrorMessage"] = e.InnerException.Message.ToString();
+                }
+                
             }
             return View(login);
         }
@@ -54,6 +93,8 @@ namespace easysched.Controllers
         {
             if (ModelState.IsValid)
             {
+                HttpContext.Session.Remove("UserLoggedIn");
+                HttpContext.Session.Remove("UserPriveleges");
                 HttpContext.Session.Remove("LoggedInEmployeeID");
                 return RedirectToAction("Index", "Home");
             }
@@ -100,10 +141,11 @@ namespace easysched.Controllers
             {
                 _context.Add(login);
                 await _context.SaveChangesAsync();
-                HttpContext.Session.SetInt32("LoggedInEmployeeID", login.EmployeeId);
+                HttpContext.Session.SetInt32("UserLoggedIn", 1);
                 return RedirectToAction("Index", "Shifts");
 
             }
+            TempData["ErrorMessage"] = "Email has already been registered.";
             return View(login);
         }
 

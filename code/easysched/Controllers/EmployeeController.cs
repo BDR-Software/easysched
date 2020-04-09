@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using easysched.Data;
 using easysched.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace easysched.Controllers
 {
@@ -22,36 +23,80 @@ namespace easysched.Controllers
         // GET: Employee
         public async Task<IActionResult> Index()
         {
-            var easyschedContext = _context.Employee.Include(e => e.Company).Include(e => e.Priveleges);
-            return View(await easyschedContext.ToListAsync());
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
+            {
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    var easyschedContext = _context.Employee.Include(e => e.Company).Include(e => e.Priveleges);
+                    return View(await easyschedContext.ToListAsync());
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logins");
+            }
+            
         }
 
         // GET: Employee/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
             {
-                return NotFound();
-            }
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+                    var employee = await _context.Employee
+                                    .Include(e => e.Company)
+                                    .Include(e => e.Priveleges)
+                                    .FirstOrDefaultAsync(m => m.Id == id);
+                    if (employee == null)
+                    {
+                        return NotFound();
+                    }
 
-            var employee = await _context.Employee
-                .Include(e => e.Company)
-                .Include(e => e.Priveleges)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
+                    return View(employee);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
+            }
+            else
             {
-                return NotFound();
-            }
+                return RedirectToAction("Index", "Logins");
+            }  
 
-            return View(employee);
+            
         }
 
         // GET: Employee/Create
         public IActionResult Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Id");
-            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id");
-            return View();
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
+            {
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Name", "Name");
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logins");
+            }
+            
         }
 
         // POST: Employee/Create
@@ -63,31 +108,58 @@ namespace easysched.Controllers
         {
             if (ModelState.IsValid)
             {
+                var employeeFound = await _context.Employee.Include(e => e.Priveleges)
+                                                               .FirstOrDefaultAsync(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                employee.CompanyId = employeeFound.CompanyId;
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
+
+                var loginFound = await _context.Login.FirstOrDefaultAsync(l => l.Email == employee.Email);
+                if (loginFound != null)
+                {
+                    loginFound.EmployeeId = employee.Id;
+                    _context.Update(loginFound);
+                    await _context.SaveChangesAsync();
+                }
+
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Id", employee.CompanyId);
-            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id", employee.PrivelegesId);
+            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Name", "Name", employee.Priveleges);
             return View(employee);
         }
 
         // GET: Employee/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
+            {
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    var employee = await _context.Employee.FindAsync(id);
+                    if (employee == null)
+                    {
+                        return NotFound();
+                    }
+                    ViewData["CompanyId"] = new SelectList(_context.Company, "Name", "Name", employee.Company);
+                    ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Name", "Name", employee.Priveleges);
+                    return View(employee);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logins");
+            }
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employee.FindAsync(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Id", employee.CompanyId);
-            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id", employee.PrivelegesId);
-            return View(employee);
+            
         }
 
         // POST: Employee/Edit/5
@@ -130,21 +202,36 @@ namespace easysched.Controllers
         // GET: Employee/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
             {
-                return NotFound();
-            }
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
 
-            var employee = await _context.Employee
-                .Include(e => e.Company)
-                .Include(e => e.Priveleges)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
+                    var employee = await _context.Employee
+                        .Include(e => e.Company)
+                        .Include(e => e.Priveleges)
+                        .FirstOrDefaultAsync(m => m.Id == id);
+                    if (employee == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(employee);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Shifts");
+                }
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index", "Logins");
             }
-
-            return View(employee);
+            
         }
 
         // POST: Employee/Delete/5
