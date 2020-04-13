@@ -84,7 +84,7 @@ namespace easysched.Controllers
             {
                 if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
                 {
-                    ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id");
+                    ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Name");
                     return View();
                 }
                 else
