@@ -1,10 +1,18 @@
-﻿@model IEnumerable<easysched.Models.Shift>
+﻿@using Microsoft.AspNetCore.Http
+@model IEnumerable<easysched.Models.Shift>
 
 @{
-    ViewData["Title"] = "Hello " + ViewData["EmployeeName"];
+    ViewData["Title"] = "Shifts for " + ViewData["EmployeeName"];
 }
 
 <h1>@ViewData["Title"]</h1>
+
+@if (Context.Session.GetInt32("UserPriveleges") == 2)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
 <div class="container">
     <div class="row">
@@ -81,3 +89,25 @@
         }
     </tbody>
 </table>
+
+
+@section Scripts
+{
+    <script>
+    $(document).ready(function () {
+        $('#bootstrapModalFullCalendar').fullCalendar({
+            header: {
+                left: '',
+                center: 'prev title next',
+                right: ''
+            },
+            eventClick: function (event, jsEvent, view) {
+                $('#modalTitle').html(event.title);
+                $('#fullCalModal').modal();
+                return false;
+            },
+            events: '@Url.Action("findall", "shifts")'
+        });
+    });
+    </script>
+}

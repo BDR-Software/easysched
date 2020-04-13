@@ -17,10 +17,11 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Pass" class="control-label"></label>
-                <input asp-for="Pass" class="form-control" type="password"/>
+                <label asp-for="Pass" class="control-label">Password</label>
+                <input asp-for="Pass" class="form-control" type="password" />
                 <span asp-validation-for="Pass" class="text-danger"></span>
             </div>
+            <input asp-for="ConfirmPass" class="form-control" hidden />
             <div class="form-group">
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
@@ -30,4 +31,11 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $("#Pass").keyup(function () {
+                $("#ConfirmPass:text").val($(this).val());
+            });
+        });
+    </script>
 }

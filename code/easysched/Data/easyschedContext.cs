@@ -28,6 +28,7 @@ namespace easysched.Data
         public virtual DbSet<Priveleges> Priveleges { get; set; }
         public virtual DbSet<Schedule> Schedule { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
+        public virtual DbSet<Timeoffrequest> Timeoffrequest { get; set; }
         public virtual DbSet<Weekday> Weekday { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -221,6 +222,12 @@ namespace easysched.Data
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.ConfirmPass)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasColumnType("varchar(255)")
@@ -308,12 +315,27 @@ namespace easysched.Data
             {
                 entity.ToTable("schedule");
 
+                entity.HasIndex(e => e.CompanyId)
+                    .HasName("FKSchedule872344");
+
                 entity.HasIndex(e => e.DepartmentId)
                     .HasName("FKSchedule876714");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.CompanyId).HasColumnName("CompanyID");
+
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
+
+                entity.Property(e => e.End).HasColumnType("date");
+
+                entity.Property(e => e.Start).HasColumnType("date");
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.Schedule)
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKSchedule872344");
 
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Schedule)
@@ -334,6 +356,8 @@ namespace easysched.Data
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Day).HasColumnType("date");
+
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
                 entity.Property(e => e.End).HasColumnType("datetime");
@@ -352,6 +376,33 @@ namespace easysched.Data
                     .WithMany(p => p.Shift)
                     .HasForeignKey(d => d.ScheduleId)
                     .HasConstraintName("FKSchedule125456");
+            });
+
+            modelBuilder.Entity<Timeoffrequest>(entity =>
+            {
+                entity.ToTable("timeoffrequest");
+
+                entity.HasIndex(e => e.EmployeeId)
+                    .HasName("FKTimeOffRequest1234");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Created).HasColumnType("datetime");
+
+                entity.Property(e => e.Day).HasColumnType("date");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.Property(e => e.Message)
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.Timeoffrequest)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKTimeOffRequest1234");
             });
 
             modelBuilder.Entity<Weekday>(entity =>

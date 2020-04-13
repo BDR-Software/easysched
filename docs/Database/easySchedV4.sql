@@ -7,11 +7,12 @@ CREATE TABLE Licencing (ID int(10) NOT NULL AUTO_INCREMENT, CompanyID int(10) NO
 CREATE TABLE Phone (ID int(10) NOT NULL AUTO_INCREMENT, CompanyID int(10) NOT NULL, EmployeeID int(10), PhoneTypeID int(10) NOT NULL, Number int(10) NOT NULL, PRIMARY KEY (ID));
 CREATE TABLE PhoneType (ID int(10) NOT NULL AUTO_INCREMENT, Type varchar(255), PRIMARY KEY (ID));
 CREATE TABLE Priveleges (ID int(10) NOT NULL AUTO_INCREMENT, Type int(10), Name VARCHAR(255), PRIMARY KEY (ID));
-CREATE TABLE Schedule (ID int(10) NOT NULL AUTO_INCREMENT, DepartmentID int(10) NOT NULL, Week int(10), PRIMARY KEY (ID));
+CREATE TABLE Schedule (ID int(10) NOT NULL AUTO_INCREMENT, CompanyID int(10) NOT NULL, DepartmentID int(10) NOT NULL, Start DATE, End DATE, PRIMARY KEY (ID));
 CREATE TABLE Department(ID int(10) PRIMARY KEY NOT NULL AUTO_INCREMENT, CompanyID int(10), Name VARCHAR(255));
 CREATE TABLE Weekday (ID int(10) NOT NULL AUTO_INCREMENT, Day int(10), PRIMARY KEY (ID));
-CREATE TABLE Shift (ID int(10) AUTO_INCREMENT PRIMARY KEY NOT NULL, EmployeeID int(10) NOT NULL, ScheduleID int(10), Start DATETIME, End DATETIME);
-CREATE TABLE Login (ID int(10) AUTO_INCREMENT PRIMARY KEY NOT NULL, Email VARCHAR(255) NOT NULL, Pass VARCHAR(255) NOT NULL, EmployeeID int(10));
+CREATE TABLE Shift (ID int(10) AUTO_INCREMENT PRIMARY KEY NOT NULL, EmployeeID int(10) NOT NULL, ScheduleID int(10), Day DATE, Start DATETIME, End DATETIME);
+CREATE TABLE Login (ID int(10) AUTO_INCREMENT PRIMARY KEY NOT NULL, Email VARCHAR(255) NOT NULL, Pass VARCHAR(255) NOT NULL, ConfirmPass VARCHAR(255) NOT NULL, EmployeeID int(10));
+CREATE TABLE TimeOffRequest (ID int(10) AUTO_INCREMENT PRIMARY KEY NOT NULL, EmployeeID int(10) NOT NULL, Created DATETIME NOT NULL, Day DATE NOT NULL, Message VARCHAR(255), Approved BOOL);
 ALTER TABLE Phone ADD CONSTRAINT FKPhone530938 FOREIGN KEY (PhoneTypeID) REFERENCES PhoneType (ID);
 ALTER TABLE Employee ADD CONSTRAINT FKEmployee833112 FOREIGN KEY (PrivelegesID) REFERENCES Priveleges (ID);
 ALTER TABLE Licencing ADD CONSTRAINT FKLicencing37786 FOREIGN KEY (CompanyID) REFERENCES Company (ID);
@@ -23,17 +24,18 @@ ALTER TABLE `Employee Availability` ADD CONSTRAINT `FKEmployee A983524` FOREIGN 
 ALTER TABLE `Billing Address` ADD CONSTRAINT `FKBilling Ad812261` FOREIGN KEY (CompanyID) REFERENCES Company (ID);
 ALTER TABLE Department ADD CONSTRAINT FKCompany872714 FOREIGN KEY (CompanyID) REFERENCES Company (ID);
 ALTER TABLE Schedule ADD CONSTRAINT FKSchedule876714 FOREIGN KEY (DepartmentID) REFERENCES Department (ID);
+ALTER TABLE Schedule ADD CONSTRAINT FKSchedule872344 FOREIGN KEY (CompanyID) REFERENCES Company (ID);
 ALTER TABLE Shift ADD CONSTRAINT FKShift123456 FOREIGN KEY (EmployeeID) REFERENCES Employee (ID);
 ALTER TABLE Shift ADD CONSTRAINT FKSchedule125456 FOREIGN KEY (ScheduleID) REFERENCES Schedule (ID);
 ALTER TABLE Login ADD CONSTRAINT FKEmployee1312456 FOREIGN KEY (EmployeeID) REFERENCES Employee (ID);
+ALTER TABLE TimeOffRequest ADD CONSTRAINT FKTimeOffRequest1234 FOREIGN KEY (EmployeeID) REFERENCES Employee (ID);
 
--- 1 is employee
--- 2 is schedule editor
-INSERT INTO Priveleges (Type) VALUES (
+
+INSERT INTO Priveleges (Type, Name) VALUES (
 	1,
     "Employee"
 );
-INSERT INTO Priveleges (Type) VALUES (
+INSERT INTO Priveleges (Type, Name) VALUES (
 	2,
     "Schedule Editor"
 );
@@ -83,46 +85,55 @@ INSERT INTO Employee (PrivelegesID, CompanyID, FirstName, LastName, EmployeeNumb
 INSERT INTO Login (Email, Pass, EmployeeID) VALUES (
 	"AEinstein@conestogac.on.ca",
     "password",
-    4
+    3
 );
 
 INSERT INTO Department (CompanyID, Name) VALUES (
 	1,
     'Front End'
 );
-INSERT INTO Schedule (DepartmentID, Week) VALUES 
+INSERT INTO Schedule (CompanyID, DepartmentID, Start, End) VALUES 
 (
 	1,
-    '5'
+	1,
+    '2020-04-05',
+    '2020-04-11'
 );
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	1, 1, '2020-04-06 9:00:00', '2020-04-06 17:00:00'
+INSERT INTO Schedule (CompanyID, DepartmentID, Start, End) VALUES 
+(
+	1,
+	1,
+    '2020-04-12',
+    '2020-04-18'
 );
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	1, 1, '2020-04-07 9:00:00', '2020-04-07 17:00:00'
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 1, '2020-04-06', '2020-04-06 9:00:00', '2020-04-06 17:00:00'
 );
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	1, 1, '2020-04-08 9:00:00', '2020-04-08 17:00:00'
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 1, '2020-04-07', '2020-04-07 9:00:00', '2020-04-07 17:00:00'
 );
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	1, 1, '2020-04-09 9:00:00', '2020-04-09 17:00:00'
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 1, '2020-04-08', '2020-04-08 9:00:00', '2020-04-08 17:00:00'
 );
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	1, 1, '2020-04-10 9:00:00', '2020-04-10 17:00:00'
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 1, '2020-04-09', '2020-04-09 9:00:00', '2020-04-09 17:00:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 1, '2020-04-10', '2020-04-10 9:00:00', '2020-04-10 17:00:00'
 );
 
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	2, 1, '2020-04-13 9:00:00', '2020-04-13 17:00:00'
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	2, 2, '2020-04-13', '2020-04-13 9:00:00', '2020-04-13 17:00:00'
 );
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	2, 1, '2020-04-14 9:00:00', '2020-04-14 17:00:00'
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	2, 2, '2020-04-14', '2020-04-14 9:00:00', '2020-04-14 17:00:00'
 );
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	2, 1, '2020-04-15 9:00:00', '2020-04-15 17:00:00'
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	2, 2, '2020-04-15', '2020-04-15 9:00:00', '2020-04-15 17:00:00'
 );
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	2, 1, '2020-04-16 9:00:00', '2020-04-16 17:00:00'
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	2, 2, '2020-04-16', '2020-04-16 9:00:00', '2020-04-16 17:00:00'
 );
-INSERT INTO Shift (EmployeeID, ScheduleID, start, end) VALUES (
-	2, 1, '2020-04-17 9:00:00', '2020-04-17 17:00:00'
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	2, 2, '2020-04-17', '2020-04-17 9:00:00', '2020-04-17 17:00:00'
 );

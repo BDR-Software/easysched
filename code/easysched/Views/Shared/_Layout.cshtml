@@ -26,13 +26,19 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Schedule" asp-action="Create">Schedule</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Schedule" asp-action="Index">Schedules</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
-                        </li>
+                        @if (Context.Session.GetInt32("UserPriveleges") == 2)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employees</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Shifts" asp-action="Index">Shifts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Timeoffrequests" asp-action="Index">Time Off Requests</a>
                         </li>
                     </ul>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-revers">
@@ -66,6 +72,7 @@
             <div class="text-danger">@TempData["ErrorMessage"]</div>
             @RenderBody()
         </section>
+        <!--
         <div class="row">
             <a href="">
                 <img src="~/img/arrowRight.png" alt="Right Arrow" />
@@ -75,6 +82,7 @@
                 <img src="~/img/arrowLeft.jpg" alt="Left Arrow" />
             </a>
         </div>
+        -->
         
     </main>
     <footer class="border-top footer text-muted">
@@ -88,23 +96,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script>
-    $(document).ready(function () {
-        $('#bootstrapModalFullCalendar').fullCalendar({
-            header: {
-                left: '',
-                center: 'prev title next',
-                right: ''
-            },
-            eventClick: function (event, jsEvent, view) {
-                $('#modalTitle').html(event.title);
-                $('#fullCalModal').modal();
-                return false;
-            },
-            events: '@Url.Action("findall", "shifts")'
-        });
-    });
-    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

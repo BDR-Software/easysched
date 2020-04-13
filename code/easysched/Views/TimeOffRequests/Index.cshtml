@@ -1,0 +1,96 @@
+﻿
+@using Microsoft.AspNetCore.Http
+@model IEnumerable<easysched.Models.Timeoffrequest>
+
+@{
+    ViewData["Title"] = "Time Off Requests";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Context.Session.GetInt32("UserPriveleges") == 1)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Day)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Approved)
+            </th>
+            @if (Context.Session.GetInt32("UserPriveleges") == 2)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Employee)
+                </th>
+                <th></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Day)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                @if (item.Approved == true)
+                {
+                    <p>Yes</p>
+                }
+                else if (item.Approved == false)
+                {
+                    <p>No</p>
+                }
+                else
+                {
+                    <p>Undetermined</p>
+                }
+            </td>
+            @if (Context.Session.GetInt32("UserPriveleges") == 2)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.FullName)
+                </td>
+                @if (item.Approved != null)
+                {
+                    <td>
+                        <a asp-action="ChangeStatus" asp-route-id="@item.Id">Approve/Deny</a>
+                    </td>
+                }
+                else if (item.Approved == true)
+                {
+                    <td>
+                        Approved
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Denied
+                    </td>
+                }
+            }
+        </tr>
+        }
+    </tbody>
+</table>

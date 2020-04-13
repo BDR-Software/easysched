@@ -84,7 +84,7 @@ namespace easysched.Controllers
             {
                 if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
                 {
-                    ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Name", "Name");
+                    ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id");
                     return View();
                 }
                 else
@@ -125,7 +125,7 @@ namespace easysched.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Name", "Name", employee.Priveleges);
+            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Name", employee.Priveleges);
             return View(employee);
         }
 
@@ -141,8 +141,8 @@ namespace easysched.Controllers
                     {
                         return NotFound();
                     }
-                    ViewData["CompanyId"] = new SelectList(_context.Company, "Name", "Name", employee.Company);
-                    ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Name", "Name", employee.Priveleges);
+                    ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Name", employee.Company);
+                    ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Name", employee.Priveleges);
                     return View(employee);
                 }
                 else
@@ -194,8 +194,8 @@ namespace easysched.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Id", employee.CompanyId);
-            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Id", employee.PrivelegesId);
+            ViewData["CompanyId"] = new SelectList(_context.Company, "Id", "Name", employee.CompanyId);
+            ViewData["PrivelegesId"] = new SelectList(_context.Priveleges, "Id", "Name", employee.PrivelegesId);
             return View(employee);
         }
 

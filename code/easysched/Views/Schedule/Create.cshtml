@@ -1,29 +1,30 @@
 ﻿@model easysched.Models.Schedule
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Schedule";
 }
 
-<h1>Create</h1>
-
-<h4>Schedule</h4>
 <hr />
-<a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Index">Manage Departments</a>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <div class="form-group">
-                    <label asp-for="DepartmentId" class="control-label"></label>
-                    <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
-                </div>
-                <label asp-for="Week" class="control-label"></label>
-                <input type="date" asp-for="Week" class="form-control" />
-                <span asp-validation-for="Week" class="text-danger"></span>
+                <label asp-for="DepartmentId" class="control-label"></label>
+                <select asp-for="DepartmentId" class ="form-control" asp-items="ViewBag.DepartmentId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Select" class="btn btn-primary" />
+                <label asp-for="Start" class="control-label"></label>
+                <input asp-for="Start" class="form-control" />
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="End" class="control-label"></label>
+                <input asp-for="End" class="form-control" />
+                <span asp-validation-for="End" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -33,3 +34,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

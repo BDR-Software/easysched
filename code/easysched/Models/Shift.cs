@@ -8,6 +8,7 @@ namespace easysched.Models
         public int Id { get; set; }
         public int EmployeeId { get; set; }
         public int? ScheduleId { get; set; }
+        public DateTime? Day { get; set; }
         public DateTime? Start { get; set; }
         public DateTime? End { get; set; }
 

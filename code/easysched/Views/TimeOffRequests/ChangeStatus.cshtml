@@ -1,0 +1,44 @@
+﻿@model easysched.Models.Timeoffrequest
+
+@{
+    ViewData["Title"] = "Approve or Deny Time Off Request";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Timeoffrequest</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Day)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Day)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Employee.FullName)
+        </dd>
+    </dl>
+</div>
+
+<form asp-action="ChangeStatus" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <input asp-for="EmployeeId" hidden />
+        <input asp-for="Day" hidden />
+        <input asp-for="Message" hidden />
+        <input type="submit" name="submit" value="Approve" class="btn btn-primary" />
+        <input type="submit" name="submit" value="Deny" class="btn btn-danger" />
+    </div>
+</form>

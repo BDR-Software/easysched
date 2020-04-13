@@ -12,6 +12,7 @@ namespace easysched.Models
             Employee = new HashSet<Employee>();
             Licencing = new HashSet<Licencing>();
             Phone = new HashSet<Phone>();
+            Schedule = new HashSet<Schedule>();
         }
 
         public int Id { get; set; }
@@ -23,5 +24,6 @@ namespace easysched.Models
         public virtual ICollection<Employee> Employee { get; set; }
         public virtual ICollection<Licencing> Licencing { get; set; }
         public virtual ICollection<Phone> Phone { get; set; }
+        public virtual ICollection<Schedule> Schedule { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace easysched.Models
             Login = new HashSet<Login>();
             Phone = new HashSet<Phone>();
             Shift = new HashSet<Shift>();
+            Timeoffrequest = new HashSet<Timeoffrequest>();
         }
 
         public int Id { get; set; }
@@ -28,5 +29,6 @@ namespace easysched.Models
         public virtual ICollection<Login> Login { get; set; }
         public virtual ICollection<Phone> Phone { get; set; }
         public virtual ICollection<Shift> Shift { get; set; }
+        public virtual ICollection<Timeoffrequest> Timeoffrequest { get; set; }
     }
 }

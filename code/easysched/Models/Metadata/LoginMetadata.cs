@@ -6,9 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace easysched.Models
-{
-    [ModelMetadataType(typeof(LoginMetadata))]
-
+{ 
     public class LoginMetadata
     {
         [Required]
@@ -32,9 +30,9 @@ namespace easysched.Models
         public int EmployeeId;
     }
 
+    [ModelMetadataType(typeof(LoginMetadata))]
     public partial class Login : IValidatableObject
     {
-        public string ConfirmPass;
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (Pass != ConfirmPass)

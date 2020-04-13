@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace easysched.Models
 {
-    [ModelMetadataType(typeof(EmployeeMetadata))]
-    public partial class Employee { }
     public class EmployeeMetadata
     {
         [HiddenInput(DisplayValue = true)]
@@ -22,6 +20,7 @@ namespace easysched.Models
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
         [Required]
         [Display(Name = "Employee Number")]
         public string EmployeeNumber { get; set; }
@@ -29,5 +28,17 @@ namespace easysched.Models
         [StringLength(50)]
         public string Email { get; set; }
         public double? Wages { get; set; }
+    }
+
+    [ModelMetadataType(typeof(EmployeeMetadata))]
+    public partial class Employee
+    {
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
     }
 }

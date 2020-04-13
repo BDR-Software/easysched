@@ -27,7 +27,8 @@ namespace easysched.Controllers
             {
                 if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
                 {
-                    var easyschedContext = _context.Schedule.Include(s => s.Department);
+                    var currentEmployee = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                    var easyschedContext = _context.Schedule.Include(s => s.Department).Where(s => s.CompanyId == currentEmployee.CompanyId);
                     return View(await easyschedContext.ToListAsync());
                 }
                 else
@@ -42,6 +43,23 @@ namespace easysched.Controllers
             
         }
 
+        [Route("schedule/findall")]
+        public IActionResult FindAllSchedules()
+        {
+            Employee employee = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+            var schedules = _context.Schedule.Include(s => s.Department)
+                                             .Where(s => s.CompanyId == employee.CompanyId)
+                                            .Select(s => new
+                                            {
+                                                id = s.Id,
+                                                title = s.Department.Name,
+                                                start = s.Start.Value.ToString("MM/dd/yyyy"),
+                                                end = s.End.Value.AddDays(1).ToString("MM/dd/yyyy"),
+                                                backgroundColor = "#99c0ff"
+                                            }).ToList();
+            return new JsonResult(schedules);
+        }
+
         // GET: Schedule/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -49,6 +67,10 @@ namespace easysched.Controllers
             {
                 if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
                 {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
                     var schedule = await _context.Schedule
                         .Include(s => s.Department)
                         .FirstOrDefaultAsync(m => m.Id == id);
@@ -56,6 +78,9 @@ namespace easysched.Controllers
                     {
                         return NotFound();
                     }
+
+                    var shifts = _context.Shift.Include(s => s.Employee).Where(s => s.ScheduleId == id).ToList();
+                    ViewData["shifts"] = shifts;
 
                     return View(schedule);
                 }
@@ -68,12 +93,6 @@ namespace easysched.Controllers
             {
                 return RedirectToAction("Index", "Logins");
             }
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            
         }
 
         // GET: Schedule/Create
@@ -103,23 +122,26 @@ namespace easysched.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Week,DepartmentId")] Schedule schedule)
+        public async Task<IActionResult> Create([Bind("Start,End,DepartmentId")] Schedule schedule)
         {
-            var scheduleExists = _context.Schedule.Any(s => s.Week == schedule.Week && s.DepartmentId == schedule.DepartmentId);
+            var scheduleExists = _context.Schedule.Any(s => s.Start == schedule.Start && s.End == schedule.End && s.DepartmentId == schedule.DepartmentId);
             if (!scheduleExists)
             {   
                 if (ModelState.IsValid)
                 {
+                    var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                    schedule.CompanyId = employeeLoggedIn.CompanyId;
                     _context.Add(schedule);
                     await _context.SaveChangesAsync();
                 }
             }
             else
             {
-                schedule = _context.Schedule.FirstOrDefault(s => s.Week == schedule.Week && s.DepartmentId == schedule.DepartmentId);
+                TempData["ErrorMessage"] = "A schedule for that department during that week has already been created.";
+                return View(schedule);
             }
-            HttpContext.Session.SetString("scheduleId", schedule.Id.ToString());
-            return RedirectToAction("index", "EmployeeSchedule");
+            HttpContext.Session.SetInt32("scheduleId", schedule.Id);
+            return RedirectToAction("Create", "Shifts");
        
         }
 
@@ -140,7 +162,7 @@ namespace easysched.Controllers
                     {
                         return NotFound();
                     }
-                    ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Id", schedule.DepartmentId);
+                    ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name", schedule.DepartmentId);
                     return View(schedule);
                 }
                 else
@@ -187,7 +209,7 @@ namespace easysched.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Id", schedule.DepartmentId);
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name", schedule.DepartmentId);
             return View(schedule);
         }
 

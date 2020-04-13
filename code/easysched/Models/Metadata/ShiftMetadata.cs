@@ -7,18 +7,35 @@ using System.Threading.Tasks;
 
 namespace easysched.Models
 {
-    [ModelMetadataType(typeof(ShiftMetadata))]
-    public partial class Shift { }
     public class ShiftMetadata
     {
+        [Required]
+        public int EmployeeId { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime? Day;
+
         [DataType(DataType.Time)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
         [Display(Name = "Start Time")]
-        public DateTime? StartTime { get; set; }
+        public DateTime? Start { get; set; }
 
         [DataType(DataType.Time)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
         [Display(Name = "End Time")]
-        public DateTime? EndTime { get; set; }
+        public DateTime? End { get; set; }
+    }
+
+    [ModelMetadataType(typeof(ShiftMetadata))]
+    public partial class Shift
+    {
+        public string StartEnd
+        {
+            get
+            {
+                return Day.Value.ToString("MMM dd (ddd) yyyy") + ": " + Start.Value.ToString("HH:mm") + " - " + Start.Value.ToString("HH:mm");
+            }
+        }
     }
 }
