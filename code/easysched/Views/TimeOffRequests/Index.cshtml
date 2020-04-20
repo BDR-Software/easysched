@@ -10,7 +10,7 @@
 
 @if (Context.Session.GetInt32("UserPriveleges") == 1)
 {
-    <p>
+    <p class="text-md-center">
         <a asp-action="Create">Create New</a>
     </p>
 }
@@ -71,7 +71,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Employee.FullName)
                 </td>
-                @if (item.Approved != null)
+                @if (item.Approved == null)
                 {
                     <td>
                         <a asp-action="ChangeStatus" asp-route-id="@item.Id">Approve/Deny</a>
@@ -83,7 +83,7 @@
                         Approved
                     </td>
                 }
-                else
+                else if (item.Approved == false)
                 {
                     <td>
                         Denied

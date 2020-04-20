@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<easysched.Models.Employee>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Employees";
 }
 
-<h1>Index</h1>
+<h1>Employees</h1>
 
-<p>
+<p class="text-md-center">
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
@@ -26,9 +26,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Wages)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Priveleges)
@@ -55,10 +52,7 @@
                 @Html.DisplayFor(modelItem => item.Wages)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Company.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Priveleges.Id)
+                @Html.DisplayFor(modelItem => item.Priveleges.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

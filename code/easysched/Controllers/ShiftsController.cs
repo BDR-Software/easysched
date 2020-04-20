@@ -25,8 +25,8 @@ namespace easysched.Controllers
         {
             if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
             {
-                var easyschedContext = _context.Shift.Include(s => s.Employee).Include(s => s.Schedule);
                 Employee employee = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                var easyschedContext = _context.Shift.Include(s => s.Employee).Include(s => s.Schedule).Where(s => s.EmployeeId == employee.Id);
                 ViewData["EmployeeName"] = employee.FullName;
                 return View(await easyschedContext.ToListAsync());
             }
@@ -87,18 +87,27 @@ namespace easysched.Controllers
                                    
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int? scheduleId)
         {
             if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
             {
                 if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
                 {
-                    ViewData["EmployeeId"] = new SelectList(_context.Employee, "Id", "FullName");
-                    if (HttpContext.Session.GetInt32("scheduleId") != null)
+                    var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                    ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(e => e.CompanyId == employeeLoggedIn.CompanyId), "Id", "FullName");
+                    if (scheduleId != null)
                     {
-
+                        ViewData["ScheduleId"] = _context.Schedule.Include(s => s.Department).Where(s => s.CompanyId == employeeLoggedIn.CompanyId).Select(s => new SelectListItem
+                        {
+                            Value = s.Id.ToString(),
+                            Text = s.StartEnd,
+                            Selected = (s.Id == scheduleId)
+                        }).ToList();
                     }
-                    ViewData["ScheduleId"] = new SelectList(_context.Schedule, "Id", "StartEnd");
+                    else
+                    {
+                        ViewData["ScheduleId"] = new SelectList(_context.Schedule.Include(s => s.Department), "Id", "StartEnd");
+                    }
                     return View();
                 }
                 else
@@ -124,12 +133,19 @@ namespace easysched.Controllers
         {
             if (ModelState.IsValid)
             {
+                TimeSpan starttime = shift.Start.Value.TimeOfDay;
+                TimeSpan endtime = shift.End.Value.TimeOfDay;
+                shift.Start = shift.Day.Value;
+                shift.Start = shift.Start.Value + starttime;
+                shift.End = shift.Day.Value;
+                shift.End = shift.End.Value + endtime;
                 _context.Add(shift);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "Id", "FullName", shift.EmployeeId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedule, "Id", "StartEnd", shift.ScheduleId);
+            var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+            ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(s => s.CompanyId == employeeLoggedIn.CompanyId), "Id", "FullName", shift.EmployeeId);
+            ViewData["ScheduleId"] = new SelectList(_context.Schedule.Include(s => s.Department).Where(s => s.CompanyId == employeeLoggedIn.CompanyId), "Id", "StartEnd", shift.ScheduleId);
             return View(shift);
         }
 
@@ -150,8 +166,9 @@ namespace easysched.Controllers
                     {
                         return NotFound();
                     }
-                    ViewData["EmployeeId"] = new SelectList(_context.Employee, "Id", "FullName", shift.EmployeeId);
-                    ViewData["ScheduleId"] = new SelectList(_context.Schedule, "Id", "StartEnd", shift.ScheduleId);
+                    var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                    ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(s => s.CompanyId == employeeLoggedIn.CompanyId), "Id", "FullName", shift.EmployeeId);
+                    ViewData["ScheduleId"] = new SelectList(_context.Schedule.Include(s => s.Department).Where(s => s.CompanyId == employeeLoggedIn.CompanyId), "Id", "StartEnd", shift.ScheduleId);
                     return View(shift);
                 }
                 else
@@ -200,8 +217,9 @@ namespace easysched.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "Id", "FullName", shift.EmployeeId);
-            ViewData["ScheduleId"] = new SelectList(_context.Schedule, "Id", "StartEnd", shift.ScheduleId);
+            var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+            ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(s => s.CompanyId == employeeLoggedIn.CompanyId), "Id", "FullName", shift.EmployeeId);
+            ViewData["ScheduleId"] = new SelectList(_context.Schedule.Include(s => s.Department).Where(s => s.CompanyId == employeeLoggedIn.CompanyId), "Id", "StartEnd", shift.ScheduleId);
             return View(shift);
         }
 

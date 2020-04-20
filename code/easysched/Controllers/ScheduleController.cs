@@ -102,7 +102,8 @@ namespace easysched.Controllers
             {
                 if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
                 {
-                    ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name");
+                    var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                    ViewData["DepartmentId"] = new SelectList(_context.Department.Where(d => d.CompanyId == employeeLoggedIn.CompanyId), "Id", "Name");
                     return View();
                 }
                 else
@@ -124,7 +125,7 @@ namespace easysched.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Start,End,DepartmentId")] Schedule schedule)
         {
-            var scheduleExists = _context.Schedule.Any(s => s.Start == schedule.Start && s.End == schedule.End && s.DepartmentId == schedule.DepartmentId);
+            var scheduleExists = _context.Schedule.Include(s => s.Department).Any(s => s.Start == schedule.Start && s.End == schedule.End && s.DepartmentId == schedule.DepartmentId);
             if (!scheduleExists)
             {   
                 if (ModelState.IsValid)
@@ -138,6 +139,8 @@ namespace easysched.Controllers
             else
             {
                 TempData["ErrorMessage"] = "A schedule for that department during that week has already been created.";
+                var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                ViewData["DepartmentId"] = new SelectList(_context.Department.Where(d => d.CompanyId == employeeLoggedIn.CompanyId), "Id", "Name");
                 return View(schedule);
             }
             HttpContext.Session.SetInt32("scheduleId", schedule.Id);
@@ -162,7 +165,8 @@ namespace easysched.Controllers
                     {
                         return NotFound();
                     }
-                    ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name", schedule.DepartmentId);
+                    var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                    ViewData["DepartmentId"] = new SelectList(_context.Department.Where(d => d.CompanyId == employeeLoggedIn.CompanyId), "Id", "Name");
                     return View(schedule);
                 }
                 else
@@ -209,7 +213,8 @@ namespace easysched.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name", schedule.DepartmentId);
+            var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+            ViewData["DepartmentId"] = new SelectList(_context.Department.Where(d => d.CompanyId == employeeLoggedIn.CompanyId), "Id", "Name");
             return View(schedule);
         }
 

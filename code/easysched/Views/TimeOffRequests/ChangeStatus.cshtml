@@ -33,11 +33,13 @@
 
 <form asp-action="ChangeStatus" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
     <div class="form-group">
-        <input asp-for="EmployeeId" hidden />
-        <input asp-for="Day" hidden />
-        <input asp-for="Message" hidden />
+        <input id="Id" name="Id"  asp-for="Id" value="@(ViewData["id"])" hidden/>
+        <input type="datetime" id="Created" name="Created"  asp-for="Created" value="@(ViewData["created"])" hidden/>
+        <input id="EmployeeId" name="EmployeeId"  asp-for="EmployeeId" value="@(ViewData["employeeid"])" hidden />
+        <input type="datetime" id="Day" name="Day"  asp-for="Day" value="@(ViewData["day"])" hidden/>
+        <input id="Message" name="Message"  asp-for="Message" value="@(ViewData["message"])" hidden />
+        <input id="Approved" name="Approved" asp-for="Approved" value="@null" hidden />
         <input type="submit" name="submit" value="Approve" class="btn btn-primary" />
         <input type="submit" name="submit" value="Deny" class="btn btn-danger" />
     </div>

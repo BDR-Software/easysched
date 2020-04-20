@@ -27,7 +27,8 @@ namespace easysched.Controllers
             {
                 if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
                 {
-                    var easyschedContext = _context.Employee.Include(e => e.Company).Include(e => e.Priveleges);
+                    var employeeLoggedIn = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                    var easyschedContext = _context.Employee.Include(e => e.Company).Include(e => e.Priveleges).Where(e => e.CompanyId == employeeLoggedIn.CompanyId);
                     return View(await easyschedContext.ToListAsync());
                 }
                 else

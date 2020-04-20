@@ -3,20 +3,24 @@
     ViewData["Title"] = "Home";
 }
 
+<h1>Welcome @ViewData["EmployeeName"]</h1>
 <div class="text-center">
-    <h1 class="display-4">Welcome @ViewData["EmployeeName"]</h1>
-
+    <br />
     @if (Context.Session.GetInt32("UserPriveleges") == 1)
     {
-        <a asp-controller="Shifts" asp-action="Index">View Shifts</a>
-        <a asp-controller="TimeOffRequests" asp-action="Create">Request Time Off</a>
+        <p class="jumbotron">
+            <a asp-controller="Shifts" asp-action="Index">View Schedule</a> | 
+            <a asp-controller="TimeOffRequests" asp-action="Create">Request Time Off</a>
+        </p>
     }
     else if (Context.Session.GetInt32("UserPriveleges") == 2)
     {
-        <a asp-controller="Schedule" asp-action="Index">Shedules</a>
-        <a asp-controller="Shifts" asp-action="Index">Shifts</a>
-        <a asp-controller="Employee" asp-action="Index">Employees</a>
-        <a asp-controller="TimeOffRequests" asp-action="Index">Time Off Requests</a>
-    }
+        <p class="jumbotron">
+            <a asp-controller="Schedule" asp-action="Index">Schedules</a> |
+            <a asp-controller="Employee" asp-action="Index">Employees</a> |
+            <a asp-controller="TimeOffRequests" asp-action="Index">Time Off Requests (@ViewData["NewRequests"] new)</a>
+        </p>
 
+    }
+    <br />
 </div>

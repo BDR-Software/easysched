@@ -51,7 +51,7 @@ namespace easysched.Controllers
                     }
                     else
                     {
-                        //show page saying account hasn't been associated with an employee yet   
+                        return RedirectToAction("RegistrationUnfinished", "Home");
                     }
                 }
                 catch (Exception e)
@@ -117,38 +117,34 @@ namespace easysched.Controllers
         [Route("register")]
         public async Task<IActionResult> Create([Bind("Id,Email,Pass,ConfirmPass,EmployeeId")] Login login)
         {
-            Login foundLogin = _context.Login.FirstOrDefault(l => l.EmployeeId == login.EmployeeId);
+            Login foundLogin = _context.Login.FirstOrDefault(l => l.Email == login.Email);
 
-            if (ModelState.IsValid && foundLogin == null)
+            if (foundLogin == null)
             {
-                if (foundLogin == null)
+                _context.Add(login);
+                await _context.SaveChangesAsync();
+                HttpContext.Session.SetInt32("UserLoggedIn", 1);
+
+                var employeeWithEmail = await _context.Employee.FirstOrDefaultAsync(e => e.Email == login.Email);
+                if (employeeWithEmail == null)
                 {
-                    _context.Add(login);
-                    await _context.SaveChangesAsync();
-                    HttpContext.Session.SetInt32("UserLoggedIn", 1);
-
-                    var employeeWithEmail = await _context.Employee.FirstOrDefaultAsync(e => e.Email == login.Email);
-                    if (employeeWithEmail == null)
-                    {
-                        //show page saying account hasn't been associated with an employee yet
-                        return RedirectToAction("Index", "RegistrationUnfinished");
-                    }
-                    else
-                    {
-                        login.Email = employeeWithEmail.Email;
-                        _context.Update(login);
-                        await _context.SaveChangesAsync();
-                    }
-
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("RegistrationUnfinished", "Home");
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Email has already been registered.";
+                    login.EmployeeId = employeeWithEmail.Id;
+                    _context.Update(login);
+                    await _context.SaveChangesAsync();
                 }
-                
 
-            }            
+                HttpContext.Session.SetInt32("LoggedInEmployeeID", employeeWithEmail.Id);
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Email has already been registered.";
+            }
             return View(login);
         }
 

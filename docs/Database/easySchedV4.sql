@@ -41,99 +41,260 @@ INSERT INTO Priveleges (Type, Name) VALUES (
 );
 
 INSERT INTO Company (Name, CompanyNumber) VALUES (
-	"Conetoga College",
-    "12345"
+	"Joes Pizza",
+    "85739"
 );
 INSERT INTO Employee (PrivelegesID, CompanyID, FirstName, LastName, EmployeeNumber, Email, Wages) VALUES (
-	1,
+	2,
     1,
-    "Jackson",
-    "Ruby",
-    582490,
-    "jruby6699@conestogac.on.ca",
-    14.50
+    "Joe",
+    "Doe",
+    10001,
+    "joe@joespizza.ca",
+    22.50
 );
-INSERT INTO Login (Email, Pass, EmployeeID) VALUES (
-	"jruby6699@conestogac.on.ca",
-    "password",
+INSERT INTO Login (Email, Pass, ConfirmPass, EmployeeID) VALUES (
+	"joe@joespizza.ca",
+    "joespizza",
+    "joespizza",
     1
 );
 INSERT INTO Employee (PrivelegesID, CompanyID, FirstName, LastName, EmployeeNumber, Email, Wages) VALUES (
 	1,
     1,
-    "John",
-    "Doe",
-    523450,
-    "johndoe@conestogac.on.ca",
+    "Cameron",
+    "Mudd",
+    10002,
+    "cameronmudd@gmail.com",
     14.50
 );
-INSERT INTO Login (Email, Pass, EmployeeID) VALUES (
-	"johndoe@conestogac.on.ca",
-    "password",
+INSERT INTO Login (Email, Pass, ConfirmPass, EmployeeID) VALUES (
+	"cameronmudd@gmail.com",
+    "cameronmudd",
+    "cameronmudd",
     2
 );
 
 INSERT INTO Employee (PrivelegesID, CompanyID, FirstName, LastName, EmployeeNumber, Email, Wages) VALUES (
-	2,
+	1,
     1,
     "Albert",
     "Einstein",
-    957493,
+    10003,
     "AEinstein@conestogac.on.ca",
     14.50
 );
-INSERT INTO Login (Email, Pass, EmployeeID) VALUES (
+INSERT INTO Login (Email, Pass, ConfirmPass, EmployeeID) VALUES (
 	"AEinstein@conestogac.on.ca",
-    "password",
+    "einstein",
+	"einstein",
     3
 );
 
 INSERT INTO Department (CompanyID, Name) VALUES (
 	1,
-    'Front End'
+    'Customer Service'
+);
+INSERT INTO Department (CompanyID, Name) VALUES (
+	1,
+    'Cooking'
 );
 INSERT INTO Schedule (CompanyID, DepartmentID, Start, End) VALUES 
 (
 	1,
 	1,
-    '2020-04-05',
-    '2020-04-11'
-);
-INSERT INTO Schedule (CompanyID, DepartmentID, Start, End) VALUES 
-(
-	1,
-	1,
-    '2020-04-12',
-    '2020-04-18'
+    '2020-04-19',
+    '2020-04-25'
 );
 INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	1, 1, '2020-04-06', '2020-04-06 9:00:00', '2020-04-06 17:00:00'
+	2, 1, '2020-04-20', '2020-04-20 9:00:00', '2020-04-20 17:00:00'
 );
 INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	1, 1, '2020-04-07', '2020-04-07 9:00:00', '2020-04-07 17:00:00'
+	2, 1, '2020-04-21', '2020-04-21 9:00:00', '2020-04-21 17:00:00'
 );
 INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	1, 1, '2020-04-08', '2020-04-08 9:00:00', '2020-04-08 17:00:00'
+	2, 1, '2020-04-22', '2020-04-22 9:00:00', '2020-04-22 17:00:00'
 );
 INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	1, 1, '2020-04-09', '2020-04-09 9:00:00', '2020-04-09 17:00:00'
+	2, 1, '2020-04-23', '2020-04-23 9:00:00', '2020-04-23 17:00:00'
 );
 INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	1, 1, '2020-04-10', '2020-04-10 9:00:00', '2020-04-10 17:00:00'
+	2, 1, '2020-04-24', '2020-04-24 9:00:00', '2020-04-24 17:00:00'
 );
 
-INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	2, 2, '2020-04-13', '2020-04-13 9:00:00', '2020-04-13 17:00:00'
+INSERT INTO Schedule (CompanyID, DepartmentID, Start, End) VALUES 
+(
+	1,
+	2,
+    '2020-04-19',
+    '2020-04-25'
 );
 INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	2, 2, '2020-04-14', '2020-04-14 9:00:00', '2020-04-14 17:00:00'
+	2, 2, '2020-04-20', '2020-04-20 9:00:00', '2020-04-20 17:00:00'
 );
 INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	2, 2, '2020-04-15', '2020-04-15 9:00:00', '2020-04-15 17:00:00'
+	2, 2, '2020-04-21', '2020-04-21 9:00:00', '2020-04-21 17:00:00'
 );
 INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	2, 2, '2020-04-16', '2020-04-16 9:00:00', '2020-04-16 17:00:00'
+	2, 2, '2020-04-22', '2020-04-22 9:00:00', '2020-04-22 17:00:00'
 );
 INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
-	2, 2, '2020-04-17', '2020-04-17 9:00:00', '2020-04-17 17:00:00'
+	2, 2, '2020-04-23', '2020-04-23 9:00:00', '2020-04-23 17:00:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	2, 2, '2020-04-24', '2020-04-24 9:00:00', '2020-04-24 17:00:00'
+);
+
+INSERT INTO Schedule (CompanyID, DepartmentID, Start, End) VALUES 
+(
+	1,
+	1,
+    '2020-04-26',
+    '2020-05-02'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 2, '2020-04-27', '2020-04-27 9:00:00', '2020-04-27 17:00:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 2, '2020-04-28', '2020-04-28 9:00:00', '2020-04-28 17:00:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 2, '2020-04-29', '2020-04-29 9:00:00', '2020-04-29 17:00:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 2, '2020-04-30', '2020-04-30 9:00:00', '2020-04-30 17:00:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	1, 2, '2020-05-01', '2020-05-01 9:00:00', '2020-05-01 17:00:00'
+);
+
+
+
+
+INSERT INTO Company (Name, CompanyNumber) VALUES (
+	"Stus Loos",
+    "85740"
+);
+INSERT INTO Employee (PrivelegesID, CompanyID, FirstName, LastName, EmployeeNumber, Email, Wages) VALUES (
+	2,
+    2,
+    "Stuart",
+    "Little",
+    11001,
+    "stuart@stusloos.ca",
+    22.50
+);
+INSERT INTO Login (Email, Pass, ConfirmPass, EmployeeID) VALUES (
+	"stuart@stusloos.ca",
+    "stuartlittle",
+    "stuartlittle",
+    4
+);
+INSERT INTO Employee (PrivelegesID, CompanyID, FirstName, LastName, EmployeeNumber, Email, Wages) VALUES (
+	1,
+    2,
+    "Judy",
+    "Little",
+    11002,
+    "judy@stusloos.ca",
+    22.50
+);
+INSERT INTO Login (Email, Pass, ConfirmPass, EmployeeID) VALUES (
+	"judy@stusloos.ca",
+    "judylittle",
+    "judylittle",
+    5
+);
+
+INSERT INTO Employee (PrivelegesID, CompanyID, FirstName, LastName, EmployeeNumber, Email, Wages) VALUES (
+	1,
+    2,
+    "Thomas",
+    "Edison",
+    11003,
+    "tedison@bell.ca",
+    14.50
+);
+INSERT INTO Login (Email, Pass, ConfirmPass, EmployeeID) VALUES (
+	"tedison@bell.ca",
+    "thomasedison",
+	"thomasedison",
+    6
+);
+
+INSERT INTO Department (CompanyID, Name) VALUES (
+	2,
+    'Customer Service'
+);
+INSERT INTO Department (CompanyID, Name) VALUES (
+	2,
+    'Manufacturing'
+);
+INSERT INTO Schedule (CompanyID, DepartmentID, Start, End) VALUES 
+(
+	2,
+	3,
+    '2020-05-03',
+    '2020-05-09'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 4, '2020-05-04', '2020-05-04 9:30:00', '2020-05-04 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 4, '2020-05-05', '2020-05-05 9:30:00', '2020-05-05 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 4, '2020-05-06', '2020-05-06 9:30:00', '2020-05-06 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 4, '2020-05-07', '2020-05-07 9:30:00', '2020-05-07 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 4, '2020-05-08', '2020-05-08 9:30:00', '2020-05-08 17:30:00'
+);
+
+INSERT INTO Schedule (CompanyID, DepartmentID, Start, End) VALUES 
+(
+	2,
+	4,
+    '2020-05-03',
+    '2020-05-09'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	6, 5, '2020-05-04', '2020-05-04 9:30:00', '2020-05-04 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	6, 5, '2020-05-05', '2020-05-05 9:30:00', '2020-05-05 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	6, 5, '2020-05-06', '2020-05-06 9:30:00', '2020-05-06 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	6, 5, '2020-05-07', '2020-05-07 9:30:00', '2020-05-07 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	6, 5, '2020-05-08', '2020-05-08 9:30:00', '2020-05-08 17:30:00'
+);
+
+INSERT INTO Schedule (CompanyID, DepartmentID, Start, End) VALUES 
+(
+	2,
+	3,
+    '2020-05-10',
+    '2020-05-16'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 6, '2020-05-11', '2020-05-11 9:30:00', '2020-05-11 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 6, '2020-05-12', '2020-05-12 9:30:00', '2020-05-12 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 6, '2020-05-13', '2020-05-13 9:30:00', '2020-05-13 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 6, '2020-05-14', '2020-05-14 9:30:00', '2020-05-14 17:30:00'
+);
+INSERT INTO Shift (EmployeeID, ScheduleID, Day, start, end) VALUES (
+	5, 6, '2020-05-15', '2020-05-15 9:30:00', '2020-05-15 17:30:00'
 );

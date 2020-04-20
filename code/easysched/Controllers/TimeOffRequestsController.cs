@@ -60,48 +60,44 @@ namespace easysched.Controllers
                 return NotFound();
             }
 
+            ViewData["id"] = timeoffrequest.Id;
+            ViewData["employeeid"] = timeoffrequest.EmployeeId;
+            ViewData["created"] = timeoffrequest.Created;
+            ViewData["day"] = timeoffrequest.Day;
+            ViewData["message"] = timeoffrequest.Message;
             return View(timeoffrequest);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeStatus(int id, string submit, [Bind("Id,EmployeeId,Created,Day,Message,Approved")] Timeoffrequest timeoffrequest)
+        public async Task<IActionResult> ChangeStatus(string submit, [Bind("Id,EmployeeId,Created,Day,Message,Approved")] Timeoffrequest timeoffrequest)
         {
-            if (id != timeoffrequest.Id)
+            try
             {
-                return NotFound();
+                switch (submit)
+                {
+                    case "Approve":
+                        timeoffrequest.Approved = true;
+                        break;
+                    case "Deny":
+                        timeoffrequest.Approved = false;
+                        break;
+                }
+                _context.Update(timeoffrequest);
+                await _context.SaveChangesAsync();
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
+                if (!TimeoffrequestExists(timeoffrequest.Id))
                 {
-                    switch(submit)
-                    {
-                        case "Approve":
-                            timeoffrequest.Approved = true;
-                            break;
-                        case "Deny":
-                            timeoffrequest.Approved = false;
-                            break;
-                    }
-                    _context.Update(timeoffrequest);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!TimeoffrequestExists(timeoffrequest.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(timeoffrequest);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: TimeOffRequests/Create

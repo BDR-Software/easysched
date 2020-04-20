@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using easysched.Models;
 using Microsoft.AspNetCore.Http;
 using easysched.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace easysched.Controllers
 {
@@ -27,6 +28,11 @@ namespace easysched.Controllers
             if (HttpContext.Session.GetInt32("UserLoggedIn") == 1)
             {
                 var currentEmployee = _context.Employee.FirstOrDefault(e => e.Id == HttpContext.Session.GetInt32("LoggedInEmployeeID"));
+                if (HttpContext.Session.GetInt32("UserPriveleges") == 2)
+                {
+                    var timeoffrequests = _context.Timeoffrequest.Include(t => t.Employee).Where(s => s.Employee.CompanyId == currentEmployee.CompanyId && s.Approved == null);
+                    ViewData["NewRequests"] = timeoffrequests.Count();
+                }                   
                 ViewData["EmployeeName"] = currentEmployee.FullName;
                 return View();
             }

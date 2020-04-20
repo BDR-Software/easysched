@@ -9,7 +9,7 @@
 
 @if (Context.Session.GetInt32("UserPriveleges") == 2)
 {
-    <p>
+    <p class="text-md-center">
         <a asp-action="Create">Create New</a>
     </p>
 }
@@ -40,20 +40,6 @@
             </div>
         </div>
     </div>
-</div>
-
-<br />
-<br />
-<br />
-
-<div class="container">
-    <aside>
-        <form method="GET" action="">
-            <button type="button">Request Time-Off</button><br />
-            <button type="button">Update Availability</button><br />
-            <button type="button">Settings</button><br />
-        </form>
-    </aside>
 </div>
 
 <br />

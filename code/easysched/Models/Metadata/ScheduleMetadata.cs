@@ -29,7 +29,7 @@ namespace easysched.Models
         {
             get
             {
-                return Start.Value.ToString("MMM dd (ddd) yyyy") + " - " + End.Value.ToString("MMM dd (ddd) yyyy");
+                return Department.Name + ": " + Start.Value.ToString("MMM dd (ddd) yyyy") + " - " + End.Value.ToString("MMM dd (ddd) yyyy");
             }
         }
     }
